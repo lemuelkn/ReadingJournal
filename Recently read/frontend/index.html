@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Journal</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Reading Journal</h1>
+            <p>Capture and reflect on what you read</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs" id="navigationTabs">
+            <!-- Rendered by TabNavigation.js -->
+        </div>
+
+        <!-- Entries Tab -->
+        <div id="entries" class="tab-content active">
+            <div id="searchContainer">
+                <!-- Rendered by SearchBox.js -->
+            </div>
+            
+            <div id="statisticsContainer">
+                <!-- Rendered by Statistics.js -->
+            </div>
+
+            <div id="entriesContainer" class="entries-container">
+                <!-- Rendered by EntryList.js -->
+            </div>
+        </div>
+
+        <!-- Add Entry Tab -->
+        <div id="add" class="tab-content">
+            <div id="entryFormContainer">
+                <!-- Rendered by EntryForm.js -->
+            </div>
+        </div>
+
+        <!-- Export Tab -->
+        <div id="export" class="tab-content">
+            <div class="entry-form">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;">Export Your Data</h2>
+                <p style="margin-bottom: 20px; color: #6c757d;">Download all your reading entries as JSON or Markdown files. Your data stays yours forever.</p>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button id="exportJSONBtn" class="btn">Export as JSON</button>
+                    <button id="exportMarkdownBtn" class="btn btn-secondary">Export as Markdown</button>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Data Storage</h4>
+                    <p style="color: #6c757d; margin-bottom: 10px;">All your data is stored locally in your browser. Nothing is sent to external servers.</p>
+                    <p style="color: #6c757d;">Regular exports ensure you never lose your reading insights.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load backend services -->
+    <script src="../backend/models/Entry.js"></script>
+    <script src="../backend/utils/dateUtils.js"></script>
+    <script src="../backend/services/StorageService.js"></script>
+    <script src="../backend/services/DataService.js"></script>
+    <script src="../backend/services/ExportService.js"></script>
+    <script src="../backend/services/ValidationService.js"></script>
+
+    <!-- Load frontend utilities -->
+    <script src="js/utils/constants.js"></script>
+    <script src="js/utils/helpers.js"></script>
+
+    <!-- Load frontend components -->
+    <script src="js/components/TabNavigation.js"></script>
+    <script src="js/components/SearchBox.js"></script>
+    <script src="js/components/Statistics.js"></script>
+    <script src="js/components/EntryList.js"></script>
+    <script src="js/components/EntryForm.js"></script>
+
+    <!-- Initialize app -->
+    <script src="js/app.js"></script>
+
+    <script>
+    // Make EntryList globally available for onclick handlers
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            if (window.readingJournalApp && window.readingJournalApp.components.entryList) {
+                window.entryList = window.readingJournalApp.components.entryList;
+            }
+        }, 100);
+    });
+    </script>
+</body>
+</html>
