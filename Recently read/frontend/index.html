@@ -3,491 +3,481 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading Journal</title>
-    <link rel="stylesheet" href="css/modern-styles.css">
+    <title>Reading Journal - Capture Your Reading Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6C5CE7;
+            --primary-dark: #5B4BC4;
+            --secondary: #A29BFE;
+            --accent: #FD79A8;
+            --success: #00B894;
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #2D3436;
+            --text-secondary: #636E72;
+            --text-muted: #B2BEC3;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .btn-launch {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-launch:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.05), rgba(253, 121, 168, 0.05));
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1.25rem 3rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s;
+            display: inline-block;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--primary);
+            padding: 1.25rem 3rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s;
+            display: inline-block;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .features-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .features-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .benefits-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .benefits-text h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-item h4 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .benefit-item p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .benefits-visual {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 24px;
+            padding: 3rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .visual-content {
+            text-align: center;
+        }
+
+        .visual-content .stat {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .visual-content .stat-label {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(253, 121, 168, 0.1));
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer p {
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-content {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-visual {
+                order: -1;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                display: none;
+            }
+
+            .cta h2 {
+                font-size: 2rem;
+            }
+
+            .features-header h2 {
+                font-size: 2rem;
+            }
+
+            .benefits-text h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .feature-card {
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Navigation -->
+    <nav class="nav">
         <div class="logo">
             📚 Reading Journal
         </div>
-        <nav class="nav">
-            <a class="nav-link active" data-view="home">Home</a>
-            <a class="nav-link" data-view="export">Export</a>
-            <button class="btn-new-entry" id="newEntryBtn">
-                ✏️ New Entry
-            </button>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main id="mainContent">
-        <!-- Home View -->
-        <div id="homeView" class="view active">
-        <!-- Hero -->
-        <section class="hero">
-            <h1>Your Reading Journey</h1>
-            <p>Capture insights, track progress, and build better reading habits</p>
-        </section>
-
-        <!-- Search -->
-        <div class="search-container">
-            <input type="text" 
-                   class="search-box" 
-                   id="searchBox"
-                   placeholder="🔍 Search your entries...">
+        <div class="nav-links">
+            <a href="home.html" class="btn-launch">Launch App →</a>
         </div>
+    </nav>
 
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="totalEntries">0</div>
-                <div class="stat-label">Total Entries</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="uniqueSources">0</div>
-                <div class="stat-label">Unique Sources</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="thisWeek">0</div>
-                <div class="stat-label">This Week</div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Transform Your Reading Habits</h1>
+            <p class="hero-subtitle">
+                Capture insights, track progress, and build deeper understanding 
+                of everything you read—all in one beautiful, private space.
+            </p>
+            <div class="hero-cta">
+                <a href="home.html" class="btn-primary">Start Journaling Free →</a>
             </div>
         </div>
+    </section>
 
-        <!-- Entries Section -->
-        <section class="entries-section">
-            <div class="section-header">
-                <h2 class="section-title">Recent Entries</h2>
-                <div class="header-controls">
-                    <div class="sort-toggle">
-                        <label class="toggle-label">Sort by:</label>
-                        <select id="sortToggle" class="sort-select">
-                            <option value="created">Date Created</option>
-                            <option value="edited">Last Edited</option>
-                        </select>
-                    </div>
-                    <div class="filter-buttons" id="filterButtons">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="Book">Books</button>
-                        <button class="filter-btn" data-filter="Article">Articles</button>
-                        <button class="filter-btn" data-filter="Newsletter">Newsletters</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="entries-grid" id="entriesGrid">
-                <!-- Entries will be rendered here -->
-            </div>
-        </section>
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to Remember What You Read?</h2>
+            <p>
+                Start building your personal reading journal today. 
+                No signup required, completely free, always yours.
+            </p>
+            <a href="home.html" class="btn-primary">Launch Reading Journal →</a>
         </div>
-        <!-- End Home View -->
+    </section>
 
-        <!-- Entry Detail View (Notion-like page) -->
-        <div id="entryDetailView" class="view">
-            <div class="detail-header">
-                <button class="back-btn" id="backBtn">← Back to Entries</button>
-                <div class="detail-actions">
-                    <button class="btn-icon" id="detailEditBtn" title="Edit">✏️</button>
-                    <button class="btn-icon" id="detailDeleteBtn" title="Delete">🗑️</button>
-                </div>
-            </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Reading Journal. Built for readers, by readers.</p>
+        <p style="margin-top: 0.5rem;">Your data stays yours. Always.</p>
+    </footer>
 
-            <div class="detail-container">
-                <!-- Main Content -->
-                <div class="detail-main">
-                    <div class="detail-title-section">
-                        <div class="detail-type" id="detailType"></div>
-                        <h1 class="detail-title" id="detailTitle"></h1>
-                        <div class="detail-author" id="detailAuthor"></div>
-                        <div class="detail-meta">
-                            <span id="detailDate"></span>
-                            <span id="detailEdited"></span>
-                        </div>
-                    </div>
-
-                    <div class="detail-rating-section" id="ratingSection">
-                        <label>Rating:</label>
-                        <div class="rating-stars" id="ratingStars"></div>
-                    </div>
-
-                    <div class="detail-section">
-                        <h3>Initial Reflection</h3>
-                        <div class="reflection-content" id="detailReflection"></div>
-                    </div>
-
-                    <div class="detail-section">
-                        <h3>Additional Notes</h3>
-                        <textarea class="detail-textarea" 
-                                  id="additionalNotes" 
-                                  placeholder="Add more thoughts, observations, or context..."></textarea>
-                    </div>
-
-                    <div class="detail-section">
-                        <h3>Key Takeaways</h3>
-                        <div class="takeaways-list" id="takeawaysList"></div>
-                        <div class="add-item-input">
-                            <input type="text" 
-                                   id="newTakeaway" 
-                                   placeholder="Add a key takeaway..."
-                                   class="inline-input">
-                            <button class="btn-add" id="addTakeawayBtn">Add</button>
-                        </div>
-                    </div>
-
-                    <div class="detail-section">
-                        <h3>Related Links</h3>
-                        <div class="links-list" id="linksList"></div>
-                        <div class="add-link-inputs">
-                            <input type="url" 
-                                   id="newLinkUrl" 
-                                   placeholder="URL"
-                                   class="inline-input">
-                            <input type="text" 
-                                   id="newLinkTitle" 
-                                   placeholder="Title (optional)"
-                                   class="inline-input">
-                            <button class="btn-add" id="addLinkBtn">Add Link</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sidebar -->
-                <div class="detail-sidebar">
-                    <div class="sidebar-section">
-                        <h4>Tags</h4>
-                        <div class="tags-container" id="tagsContainer"></div>
-                        <div class="add-item-input">
-                            <input type="text" 
-                                   id="newTag" 
-                                   placeholder="Add tag..."
-                                   class="inline-input">
-                            <button class="btn-add-small" id="addTagBtn">+</button>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-section">
-                        <h4>Progress</h4>
-                        <select id="progressSelect" class="progress-select">
-                            <option value="">Not started</option>
-                            <option value="reading">Reading</option>
-                            <option value="completed">Completed</option>
-                            <option value="paused">Paused</option>
-                        </select>
-                    </div>
-
-                    <div class="sidebar-section">
-                        <h4>Info</h4>
-                        <div class="info-item">
-                            <span class="info-label">Created:</span>
-                            <span id="sidebarCreated"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Last edited:</span>
-                            <span id="sidebarEdited"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Edit count:</span>
-                            <span id="sidebarEditCount"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Entry Detail View -->
-    </main>
-
-    <!-- Add Entry Modal -->
-    <div class="modal" id="entryModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Add New Entry</h2>
-                <button class="close-btn" id="closeModalBtn">✕</button>
-            </div>
-            <div class="modal-body">
-                <form id="entryForm">
-                    <input type="hidden" id="entryId">
-                    
-                    <!-- Step 1: Choose Media Type -->
-                    <div id="step1" class="form-step active">
-                        <div class="step-title">What are you reading?</div>
-                        <div class="media-type-grid">
-                            <div class="media-type-card" data-type="Book" onclick="app.selectMediaType('Book')">
-                                <div class="media-icon">📚</div>
-                                <div class="media-label">Book</div>
-                            </div>
-                            <div class="media-type-card" data-type="Article" onclick="app.selectMediaType('Article')">
-                                <div class="media-icon">📰</div>
-                                <div class="media-label">Article</div>
-                            </div>
-                            <div class="media-type-card" data-type="Newsletter" onclick="app.selectMediaType('Newsletter')">
-                                <div class="media-icon">✉️</div>
-                                <div class="media-label">Newsletter</div>
-                            </div>
-                            <div class="media-type-card" data-type="Research Paper" onclick="app.selectMediaType('Research Paper')">
-                                <div class="media-icon">🔬</div>
-                                <div class="media-label">Research Paper</div>
-                            </div>
-                            <div class="media-type-card" data-type="Blog Post" onclick="app.selectMediaType('Blog Post')">
-                                <div class="media-icon">💭</div>
-                                <div class="media-label">Blog Post</div>
-                            </div>
-                            <div class="media-type-card" data-type="Other" onclick="app.selectMediaType('Other')">
-                                <div class="media-icon">📝</div>
-                                <div class="media-label">Other</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Media-Specific Fields -->
-                    <div id="step2" class="form-step">
-                        <button type="button" class="back-to-step1" onclick="app.backToStep1()">← Back</button>
-                        
-                        <div class="selected-media-badge">
-                            <span id="selectedMediaIcon"></span>
-                            <span id="selectedMediaText"></span>
-                        </div>
-
-                        <!-- Book Fields -->
-                        <div id="bookFields" class="media-fields">
-                            <div class="form-group">
-                                <label class="form-label">Book Title *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="bookTitle" 
-                                       placeholder="e.g., Atomic Habits"
-                                       maxlength="200">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Author *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="bookAuthor" 
-                                       placeholder="e.g., James Clear"
-                                       maxlength="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">ISBN (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="bookISBN" 
-                                       placeholder="e.g., 978-0735211292">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Publisher (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="bookPublisher" 
-                                       placeholder="e.g., Penguin Random House">
-                            </div>
-                        </div>
-
-                        <!-- Article Fields -->
-                        <div id="articleFields" class="media-fields">
-                            <div class="form-group">
-                                <label class="form-label">Article Title *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="articleTitle" 
-                                       placeholder="e.g., The Future of AI"
-                                       maxlength="200">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">URL/Link (Optional)</label>
-                                <input type="url" 
-                                       class="form-input" 
-                                       id="articleURL" 
-                                       placeholder="https://...">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Author (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="articleAuthor" 
-                                       placeholder="Author name"
-                                       maxlength="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Publication (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="articlePublication" 
-                                       placeholder="e.g., The Atlantic, Medium">
-                            </div>
-                        </div>
-
-                        <!-- Newsletter/Substack Fields -->
-                        <div id="newsletterFields" class="media-fields">
-                            <div class="form-group">
-                                <label class="form-label">Newsletter Title *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="newsletterTitle" 
-                                       placeholder="e.g., The Daily Brief"
-                                       maxlength="200">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Newsletter Name/Author *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="newsletterAuthor" 
-                                       placeholder="e.g., Paul Graham, Morning Brew"
-                                       maxlength="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">URL (Optional)</label>
-                                <input type="url" 
-                                       class="form-input" 
-                                       id="newsletterURL" 
-                                       placeholder="https://...">
-                            </div>
-                        </div>
-
-                        <!-- Research Paper Fields -->
-                        <div id="researchFields" class="media-fields">
-                            <div class="form-group">
-                                <label class="form-label">Paper Title *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="researchTitle" 
-                                       placeholder="Full paper title"
-                                       maxlength="300">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Authors *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="researchAuthors" 
-                                       placeholder="e.g., Smith, J., Jones, K."
-                                       maxlength="200">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Journal/Conference (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="researchJournal" 
-                                       placeholder="e.g., Nature, ACM">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">DOI or URL (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="researchDOI" 
-                                       placeholder="DOI: 10.1234/... or URL">
-                            </div>
-                        </div>
-
-                        <!-- Blog Post Fields -->
-                        <div id="blogFields" class="media-fields">
-                            <div class="form-group">
-                                <label class="form-label">Post Title *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="blogTitle" 
-                                       placeholder="Blog post title"
-                                       maxlength="200">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">URL *</label>
-                                <input type="url" 
-                                       class="form-input" 
-                                       id="blogURL" 
-                                       placeholder="https://...">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Author/Blog Name (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="blogAuthor" 
-                                       placeholder="Author or blog name"
-                                       maxlength="100">
-                            </div>
-                        </div>
-
-                        <!-- Other Fields -->
-                        <div id="otherFields" class="media-fields">
-                            <div class="form-group">
-                                <label class="form-label">Title *</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="otherTitle" 
-                                       placeholder="What did you read/watch?"
-                                       maxlength="200">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Source/Author (Optional)</label>
-                                <input type="text" 
-                                       class="form-input" 
-                                       id="otherAuthor" 
-                                       placeholder="Who created this?"
-                                       maxlength="100">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Link (Optional)</label>
-                                <input type="url" 
-                                       class="form-input" 
-                                       id="otherURL" 
-                                       placeholder="https://...">
-                            </div>
-                        </div>
-
-                        <!-- Common Reflection Field for All Types -->
-                        <div class="form-group">
-                            <label class="form-label">Your Reflection *</label>
-                            <textarea class="form-textarea" 
-                                      id="reflection" 
-                                      placeholder="What did you learn? What were the key insights? How does this connect to what you already know?"
-                                      required
-                                      maxlength="5000"></textarea>
-                            <div class="char-counter">
-                                <span id="charCount">0</span> / 5000
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-primary" id="submitBtn">Save Entry</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span id="toastMessage"></span>
-    </div>
-
-    <!-- Load Scripts in Correct Order -->
-    <!-- 1. Load Entry model first -->
-    <script src="../backend/models/Entry.js"></script>
-    
-    <!-- 2. Load Storage service (no dependencies) -->
-    <script src="../backend/services/StorageService.js"></script>
-    
-    <!-- 3. Load Data service (needs Entry and StorageService) -->
-    <script src="../backend/services/DataService.js"></script>
-    
-    <!-- 4. Load Export service (needs DataService) -->
-    <script src="../backend/services/ExportService.js"></script>
-    
-    <!-- 5. Load Validation service (optional, if you have it) -->
-    <script src="../backend/services/ValidationService.js"></script>
-    
-    <!-- 6. Finally load the main app (needs all services) -->
-    <script src="js/modern-app.js"></script>
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
