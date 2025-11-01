@@ -4,93 +4,490 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reading Journal</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/modern-styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📚 Reading Journal</h1>
-            <p>Capture and reflect on what you read</p>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            📚 Reading Journal
+        </div>
+        <nav class="nav">
+            <a class="nav-link active" data-view="home">Home</a>
+            <a class="nav-link" data-view="export">Export</a>
+            <button class="btn-new-entry" id="newEntryBtn">
+                ✏️ New Entry
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home View -->
+        <div id="homeView" class="view active">
+        <!-- Hero -->
+        <section class="hero">
+            <h1>Your Reading Journey</h1>
+            <p>Capture insights, track progress, and build better reading habits</p>
+        </section>
+
+        <!-- Search -->
+        <div class="search-container">
+            <input type="text" 
+                   class="search-box" 
+                   id="searchBox"
+                   placeholder="🔍 Search your entries...">
         </div>
 
-        <!-- Navigation Tabs -->
-        <div class="nav-tabs" id="navigationTabs">
-            <!-- Rendered by TabNavigation.js -->
-        </div>
-
-        <!-- Entries Tab -->
-        <div id="entries" class="tab-content active">
-            <div id="searchContainer">
-                <!-- Rendered by SearchBox.js -->
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalEntries">0</div>
+                <div class="stat-label">Total Entries</div>
             </div>
-            
-            <div id="statisticsContainer">
-                <!-- Rendered by Statistics.js -->
+            <div class="stat-card">
+                <div class="stat-number" id="uniqueSources">0</div>
+                <div class="stat-label">Unique Sources</div>
             </div>
-
-            <div id="entriesContainer" class="entries-container">
-                <!-- Rendered by EntryList.js -->
+            <div class="stat-card">
+                <div class="stat-number" id="thisWeek">0</div>
+                <div class="stat-label">This Week</div>
             </div>
         </div>
 
-        <!-- Add Entry Tab -->
-        <div id="add" class="tab-content">
-            <div id="entryFormContainer">
-                <!-- Rendered by EntryForm.js -->
+        <!-- Entries Section -->
+        <section class="entries-section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Entries</h2>
+                <div class="header-controls">
+                    <div class="sort-toggle">
+                        <label class="toggle-label">Sort by:</label>
+                        <select id="sortToggle" class="sort-select">
+                            <option value="created">Date Created</option>
+                            <option value="edited">Last Edited</option>
+                        </select>
+                    </div>
+                    <div class="filter-buttons" id="filterButtons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="Book">Books</button>
+                        <button class="filter-btn" data-filter="Article">Articles</button>
+                        <button class="filter-btn" data-filter="Newsletter">Newsletters</button>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Export Tab -->
-        <div id="export" class="tab-content">
-            <div class="entry-form">
-                <h2 style="margin-bottom: 20px; color: #2c3e50;">Export Your Data</h2>
-                <p style="margin-bottom: 20px; color: #6c757d;">Download all your reading entries as JSON or Markdown files. Your data stays yours forever.</p>
-                
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <button id="exportJSONBtn" class="btn">Export as JSON</button>
-                    <button id="exportMarkdownBtn" class="btn btn-secondary">Export as Markdown</button>
+            <div class="entries-grid" id="entriesGrid">
+                <!-- Entries will be rendered here -->
+            </div>
+        </section>
+        </div>
+        <!-- End Home View -->
+
+        <!-- Entry Detail View (Notion-like page) -->
+        <div id="entryDetailView" class="view">
+            <div class="detail-header">
+                <button class="back-btn" id="backBtn">← Back to Entries</button>
+                <div class="detail-actions">
+                    <button class="btn-icon" id="detailEditBtn" title="Edit">✏️</button>
+                    <button class="btn-icon" id="detailDeleteBtn" title="Delete">🗑️</button>
+                </div>
+            </div>
+
+            <div class="detail-container">
+                <!-- Main Content -->
+                <div class="detail-main">
+                    <div class="detail-title-section">
+                        <div class="detail-type" id="detailType"></div>
+                        <h1 class="detail-title" id="detailTitle"></h1>
+                        <div class="detail-author" id="detailAuthor"></div>
+                        <div class="detail-meta">
+                            <span id="detailDate"></span>
+                            <span id="detailEdited"></span>
+                        </div>
+                    </div>
+
+                    <div class="detail-rating-section" id="ratingSection">
+                        <label>Rating:</label>
+                        <div class="rating-stars" id="ratingStars"></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Initial Reflection</h3>
+                        <div class="reflection-content" id="detailReflection"></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Additional Notes</h3>
+                        <textarea class="detail-textarea" 
+                                  id="additionalNotes" 
+                                  placeholder="Add more thoughts, observations, or context..."></textarea>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Key Takeaways</h3>
+                        <div class="takeaways-list" id="takeawaysList"></div>
+                        <div class="add-item-input">
+                            <input type="text" 
+                                   id="newTakeaway" 
+                                   placeholder="Add a key takeaway..."
+                                   class="inline-input">
+                            <button class="btn-add" id="addTakeawayBtn">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Related Links</h3>
+                        <div class="links-list" id="linksList"></div>
+                        <div class="add-link-inputs">
+                            <input type="url" 
+                                   id="newLinkUrl" 
+                                   placeholder="URL"
+                                   class="inline-input">
+                            <input type="text" 
+                                   id="newLinkTitle" 
+                                   placeholder="Title (optional)"
+                                   class="inline-input">
+                            <button class="btn-add" id="addLinkBtn">Add Link</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #17a2b8;">
-                    <h4 style="color: #2c3e50; margin-bottom: 10px;">Data Storage</h4>
-                    <p style="color: #6c757d; margin-bottom: 10px;">All your data is stored locally in your browser. Nothing is sent to external servers.</p>
-                    <p style="color: #6c757d;">Regular exports ensure you never lose your reading insights.</p>
+                <!-- Sidebar -->
+                <div class="detail-sidebar">
+                    <div class="sidebar-section">
+                        <h4>Tags</h4>
+                        <div class="tags-container" id="tagsContainer"></div>
+                        <div class="add-item-input">
+                            <input type="text" 
+                                   id="newTag" 
+                                   placeholder="Add tag..."
+                                   class="inline-input">
+                            <button class="btn-add-small" id="addTagBtn">+</button>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h4>Progress</h4>
+                        <select id="progressSelect" class="progress-select">
+                            <option value="">Not started</option>
+                            <option value="reading">Reading</option>
+                            <option value="completed">Completed</option>
+                            <option value="paused">Paused</option>
+                        </select>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h4>Info</h4>
+                        <div class="info-item">
+                            <span class="info-label">Created:</span>
+                            <span id="sidebarCreated"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Last edited:</span>
+                            <span id="sidebarEdited"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Edit count:</span>
+                            <span id="sidebarEditCount"></span>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <!-- End Entry Detail View -->
+    </main>
+
+    <!-- Add Entry Modal -->
+    <div class="modal" id="entryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Add New Entry</h2>
+                <button class="close-btn" id="closeModalBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="entryForm">
+                    <input type="hidden" id="entryId">
+                    
+                    <!-- Step 1: Choose Media Type -->
+                    <div id="step1" class="form-step active">
+                        <div class="step-title">What are you reading?</div>
+                        <div class="media-type-grid">
+                            <div class="media-type-card" data-type="Book" onclick="app.selectMediaType('Book')">
+                                <div class="media-icon">📚</div>
+                                <div class="media-label">Book</div>
+                            </div>
+                            <div class="media-type-card" data-type="Article" onclick="app.selectMediaType('Article')">
+                                <div class="media-icon">📰</div>
+                                <div class="media-label">Article</div>
+                            </div>
+                            <div class="media-type-card" data-type="Newsletter" onclick="app.selectMediaType('Newsletter')">
+                                <div class="media-icon">✉️</div>
+                                <div class="media-label">Newsletter</div>
+                            </div>
+                            <div class="media-type-card" data-type="Research Paper" onclick="app.selectMediaType('Research Paper')">
+                                <div class="media-icon">🔬</div>
+                                <div class="media-label">Research Paper</div>
+                            </div>
+                            <div class="media-type-card" data-type="Blog Post" onclick="app.selectMediaType('Blog Post')">
+                                <div class="media-icon">💭</div>
+                                <div class="media-label">Blog Post</div>
+                            </div>
+                            <div class="media-type-card" data-type="Other" onclick="app.selectMediaType('Other')">
+                                <div class="media-icon">📝</div>
+                                <div class="media-label">Other</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Media-Specific Fields -->
+                    <div id="step2" class="form-step">
+                        <button type="button" class="back-to-step1" onclick="app.backToStep1()">← Back</button>
+                        
+                        <div class="selected-media-badge">
+                            <span id="selectedMediaIcon"></span>
+                            <span id="selectedMediaText"></span>
+                        </div>
+
+                        <!-- Book Fields -->
+                        <div id="bookFields" class="media-fields">
+                            <div class="form-group">
+                                <label class="form-label">Book Title *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="bookTitle" 
+                                       placeholder="e.g., Atomic Habits"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Author *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="bookAuthor" 
+                                       placeholder="e.g., James Clear"
+                                       maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">ISBN (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="bookISBN" 
+                                       placeholder="e.g., 978-0735211292">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Publisher (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="bookPublisher" 
+                                       placeholder="e.g., Penguin Random House">
+                            </div>
+                        </div>
+
+                        <!-- Article Fields -->
+                        <div id="articleFields" class="media-fields">
+                            <div class="form-group">
+                                <label class="form-label">Article Title *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="articleTitle" 
+                                       placeholder="e.g., The Future of AI"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">URL/Link (Optional)</label>
+                                <input type="url" 
+                                       class="form-input" 
+                                       id="articleURL" 
+                                       placeholder="https://...">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Author (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="articleAuthor" 
+                                       placeholder="Author name"
+                                       maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Publication (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="articlePublication" 
+                                       placeholder="e.g., The Atlantic, Medium">
+                            </div>
+                        </div>
+
+                        <!-- Newsletter/Substack Fields -->
+                        <div id="newsletterFields" class="media-fields">
+                            <div class="form-group">
+                                <label class="form-label">Newsletter Title *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="newsletterTitle" 
+                                       placeholder="e.g., The Daily Brief"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Newsletter Name/Author *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="newsletterAuthor" 
+                                       placeholder="e.g., Paul Graham, Morning Brew"
+                                       maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">URL (Optional)</label>
+                                <input type="url" 
+                                       class="form-input" 
+                                       id="newsletterURL" 
+                                       placeholder="https://...">
+                            </div>
+                        </div>
+
+                        <!-- Research Paper Fields -->
+                        <div id="researchFields" class="media-fields">
+                            <div class="form-group">
+                                <label class="form-label">Paper Title *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="researchTitle" 
+                                       placeholder="Full paper title"
+                                       maxlength="300">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Authors *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="researchAuthors" 
+                                       placeholder="e.g., Smith, J., Jones, K."
+                                       maxlength="200">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Journal/Conference (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="researchJournal" 
+                                       placeholder="e.g., Nature, ACM">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">DOI or URL (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="researchDOI" 
+                                       placeholder="DOI: 10.1234/... or URL">
+                            </div>
+                        </div>
+
+                        <!-- Blog Post Fields -->
+                        <div id="blogFields" class="media-fields">
+                            <div class="form-group">
+                                <label class="form-label">Post Title *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="blogTitle" 
+                                       placeholder="Blog post title"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">URL *</label>
+                                <input type="url" 
+                                       class="form-input" 
+                                       id="blogURL" 
+                                       placeholder="https://...">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Author/Blog Name (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="blogAuthor" 
+                                       placeholder="Author or blog name"
+                                       maxlength="100">
+                            </div>
+                        </div>
+
+                        <!-- Other Fields -->
+                        <div id="otherFields" class="media-fields">
+                            <div class="form-group">
+                                <label class="form-label">Title *</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="otherTitle" 
+                                       placeholder="What did you read/watch?"
+                                       maxlength="200">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Source/Author (Optional)</label>
+                                <input type="text" 
+                                       class="form-input" 
+                                       id="otherAuthor" 
+                                       placeholder="Who created this?"
+                                       maxlength="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Link (Optional)</label>
+                                <input type="url" 
+                                       class="form-input" 
+                                       id="otherURL" 
+                                       placeholder="https://...">
+                            </div>
+                        </div>
+
+                        <!-- Common Reflection Field for All Types -->
+                        <div class="form-group">
+                            <label class="form-label">Your Reflection *</label>
+                            <textarea class="form-textarea" 
+                                      id="reflection" 
+                                      placeholder="What did you learn? What were the key insights? How does this connect to what you already know?"
+                                      required
+                                      maxlength="5000"></textarea>
+                            <div class="char-counter">
+                                <span id="charCount">0</span> / 5000
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="submitBtn">Save Entry</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Load backend services -->
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Load Scripts in Correct Order -->
+    <!-- 1. Load Entry model first -->
     <script src="../backend/models/Entry.js"></script>
-    <script src="../backend/utils/dateUtils.js"></script>
+    
+    <!-- 2. Load Storage service (no dependencies) -->
     <script src="../backend/services/StorageService.js"></script>
+    
+    <!-- 3. Load Data service (needs Entry and StorageService) -->
     <script src="../backend/services/DataService.js"></script>
+    
+    <!-- 4. Load Export service (needs DataService) -->
     <script src="../backend/services/ExportService.js"></script>
+    
+    <!-- 5. Load Validation service (optional, if you have it) -->
     <script src="../backend/services/ValidationService.js"></script>
-
-    <!-- Load frontend utilities -->
-    <script src="js/utils/constants.js"></script>
-    <script src="js/utils/helpers.js"></script>
-
-    <!-- Load frontend components -->
-    <script src="js/components/TabNavigation.js"></script>
-    <script src="js/components/SearchBox.js"></script>
-    <script src="js/components/Statistics.js"></script>
-    <script src="js/components/EntryList.js"></script>
-    <script src="js/components/EntryForm.js"></script>
-
-    <!-- Initialize app -->
-    <script src="js/app.js"></script>
-
-    <script>
-    // Make EntryList globally available for onclick handlers
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-            if (window.readingJournalApp && window.readingJournalApp.components.entryList) {
-                window.entryList = window.readingJournalApp.components.entryList;
-            }
-        }, 100);
-    });
-    </script>
+    
+    <!-- 6. Finally load the main app (needs all services) -->
+    <script src="js/modern-app.js"></script>
 </body>
 </html>
